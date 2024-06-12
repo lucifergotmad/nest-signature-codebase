@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+
 export type MongoEntityProps<MongoEntity> = Omit<MongoEntity, '_id'> & {
   _id: Types.ObjectId;
 };

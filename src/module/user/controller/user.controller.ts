@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Query } from '@nestjs/common';
-import { GetPaginationDto } from 'src/core/base/http/get-pagination.dto.base';
+import { GetPaginationDTO } from 'src/core/base/http/get-pagination.dto.base';
 import { JwtDecoded } from 'src/core/base/module/use-case.base';
 import { AuthUser } from 'src/core/decorator/auth-user.decorator';
 import { SecureDelete } from 'src/core/decorator/secure-delete.decorator';
@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @SecureGet()
-  async getUserHandler(@Query() query: GetPaginationDto) {
+  async getUserHandler(@Query() query: GetPaginationDTO) {
     return this.getUser.execute({ data: query });
   }
 

@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import { Public } from 'src/core/decorator/public.decorator';
 
 @Controller('resources')
@@ -8,8 +8,8 @@ export class ResourceController {
 
   @Public()
   @Get('status')
-  getHello(): ResponseDto {
-    return new ResponseDto({
+  getHello(): ResponseDTO {
+    return new ResponseDTO({
       status: HttpStatus.OK,
       message: 'Status Alive.',
     });

@@ -4,7 +4,7 @@ import { BaseUseCase } from 'src/core/base/module/use-case.base';
 import { PickUseCasePayload } from 'src/core/base/types/pick-use-case-payload.type';
 import { EnvService } from 'src/infra/config/env.service';
 import { AuthRefreshTokenRequestProps } from '../contract/auth.request.contract';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import { RefreshTokenResponseProps } from '../contract/auth.response.contract';
 
 interface IHistoryRefreshToken {
@@ -16,7 +16,7 @@ type TRefreshTokenPayload = PickUseCasePayload<
   AuthRefreshTokenRequestProps,
   'data'
 >;
-type TRefreshTokenResponse = ResponseDto<RefreshTokenResponseProps>;
+type TRefreshTokenResponse = ResponseDTO<RefreshTokenResponseProps>;
 @Injectable()
 export class RefreshToken extends BaseUseCase<
   TRefreshTokenPayload,
@@ -42,7 +42,7 @@ export class RefreshToken extends BaseUseCase<
     });
     this._registerUsedRefreshToken(data.refresh_token);
 
-    return new ResponseDto({
+    return new ResponseDTO({
       status: HttpStatus.OK,
       data: { access_token: token, refresh_token: refreshToken },
     });

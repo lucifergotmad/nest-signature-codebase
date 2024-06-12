@@ -4,7 +4,7 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import { BaseUseCase } from 'src/core/base/module/use-case.base';
 
 import { EnvService } from 'src/infra/config/env.service';
@@ -21,7 +21,7 @@ type TCreateUserPayload = PickUseCasePayload<
   CreateUserRequestProps & OptionalSecretKeyProps,
   'data' | 'user'
 >;
-type TCreateUserResponse = ResponseDto<IRepositoryResponse>;
+type TCreateUserResponse = ResponseDTO<IRepositoryResponse>;
 
 @Injectable()
 export class CreateUser extends BaseUseCase<
@@ -52,7 +52,7 @@ export class CreateUser extends BaseUseCase<
 
       const result = await this.userRepository.save(userEntity);
 
-      return new ResponseDto({ status: HttpStatus.CREATED, data: result });
+      return new ResponseDTO({ status: HttpStatus.CREATED, data: result });
     } catch (err) {
       this.logger.error(err);
 

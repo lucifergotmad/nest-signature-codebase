@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     if (payload.exp < Date.now() / 1000) {
-      throw new BadRequestException('Token is Expired');
+      throw new BadRequestException('Token is expired!');
     }
     return { user_id: payload.sub };
   }

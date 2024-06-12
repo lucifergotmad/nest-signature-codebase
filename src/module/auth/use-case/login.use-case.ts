@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import { BaseUseCase } from 'src/core/base/module/use-case.base';
 import { PickUseCasePayload } from 'src/core/base/types/pick-use-case-payload.type';
 
@@ -13,7 +13,7 @@ import { LoginUserRequestProps } from '../contract/auth.request.contract';
 import { LoginUserResponseProps } from '../contract/auth.response.contract';
 
 type TLoginPayload = PickUseCasePayload<LoginUserRequestProps, 'data'>;
-type TLoginResponse = ResponseDto<LoginUserResponseProps>;
+type TLoginResponse = ResponseDTO<LoginUserResponseProps>;
 @Injectable()
 export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
   constructor(
@@ -52,7 +52,7 @@ export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
     });
 
     const userObject = UserMapper.toPlainObject(userData);
-    return new ResponseDto({
+    return new ResponseDTO({
       status: HttpStatus.OK,
       data: {
         user_id: userObject.user_id,

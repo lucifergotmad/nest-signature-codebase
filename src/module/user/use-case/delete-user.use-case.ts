@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import {
   BaseUseCase,
   IUseCasePayload,
@@ -8,7 +8,7 @@ import { InjectUserRepository } from '../repository/user.repository.provider';
 import { UserRepositoryPort } from 'src/module/user/repository/user.repository.port';
 
 type TDeleteUserPayload = Pick<IUseCasePayload<never>, '_id'>;
-type TDeleteUserResponse = ResponseDto;
+type TDeleteUserResponse = ResponseDTO;
 
 @Injectable()
 export class DeleteUser extends BaseUseCase<
@@ -21,7 +21,7 @@ export class DeleteUser extends BaseUseCase<
     super();
   }
 
-  public async execute({ _id }: TDeleteUserPayload): Promise<ResponseDto> {
+  public async execute({ _id }: TDeleteUserPayload): Promise<ResponseDTO> {
     try {
       await this.userRepository.delete({ _id });
     } catch (err) {
@@ -30,7 +30,7 @@ export class DeleteUser extends BaseUseCase<
 
       throw new HttpException(err.message, 500);
     }
-    return new ResponseDto({
+    return new ResponseDTO({
       status: HttpStatus.OK,
       message: `${_id} documents deleted!`,
     });

@@ -8,7 +8,7 @@ import {
 import { InjectUserRepository } from '../repository/user.repository.provider';
 
 import { BaseUseCase } from 'src/core/base/module/use-case.base';
-import { ResponseDto } from 'src/core/base/http/response.dto.base';
+import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 
 import { PickUseCasePayload } from 'src/core/base/types/pick-use-case-payload.type';
 import { ObjectIdVO } from 'src/core/value-object/object-id.value-object';
@@ -19,7 +19,7 @@ type TUpdateUserPayload = PickUseCasePayload<
   UpdateUserRequestProps,
   'data' | '_id'
 >;
-type TUpdateUserResponse = ResponseDto;
+type TUpdateUserResponse = ResponseDTO;
 @Injectable()
 export class UpdateUser extends BaseUseCase<
   TUpdateUserPayload,
@@ -50,7 +50,7 @@ export class UpdateUser extends BaseUseCase<
 
       throw new HttpException(err.message, 500);
     }
-    return new ResponseDto({
+    return new ResponseDTO({
       status: HttpStatus.OK,
       message: `User ${_id} documents updated`,
     });

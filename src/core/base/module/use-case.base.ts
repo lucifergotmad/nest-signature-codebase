@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ClientSession } from 'mongoose';
 import { CustomLogger } from 'src/infra/logger/logger';
 
 export interface JwtDecoded {
@@ -12,7 +13,7 @@ export interface IUseCasePayload<T> {
 }
 
 export interface IUseCase<IReq, IRes> {
-  execute(request?: IReq): IRes | Promise<IRes>;
+  execute(request?: IReq, session?: ClientSession): IRes | Promise<IRes>;
 }
 
 @Injectable()
@@ -23,5 +24,8 @@ export abstract class BaseUseCase<IReq, IRes> implements IUseCase<IReq, IRes> {
     this.logger = new CustomLogger(this.constructor.name);
   }
 
-  abstract execute(request?: IReq): IRes | Promise<IRes>;
+  abstract execute(
+    request?: IReq,
+    session?: ClientSession,
+  ): IRes | Promise<IRes>;
 }
