@@ -10,6 +10,7 @@ import { GetPaginationProps } from 'src/core/contract/get-pagination.request.con
 
 export type TGetUserPayload = PickUseCasePayload<GetPaginationProps, 'data'>;
 export type TGetUserResponse = ResponseDTO<UserResponseProps[]>;
+
 @Injectable()
 export class GetUser extends BaseUseCase<TGetUserPayload, TGetUserResponse> {
   constructor(

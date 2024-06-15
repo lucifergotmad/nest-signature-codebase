@@ -1,5 +1,5 @@
 import { Entity } from 'src/core/base/domain/entity';
-import { HashService } from 'src/helper/module/hash.service';
+import { HashService } from 'src/helper/modules/hash/hash.service';
 import { UserLevel } from './value-objects/user-level.value-object';
 import { Types } from 'mongoose';
 

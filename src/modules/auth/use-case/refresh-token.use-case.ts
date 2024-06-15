@@ -9,7 +9,7 @@ import { RefreshTokenResponseProps } from '../contract/auth.response.contract';
 
 interface IHistoryRefreshToken {
   refreshToken: string;
-  expired_at: Date;
+  expiredAt: Date;
 }
 
 type TRefreshTokenPayload = PickUseCasePayload<
@@ -17,6 +17,7 @@ type TRefreshTokenPayload = PickUseCasePayload<
   'data'
 >;
 type TRefreshTokenResponse = ResponseDTO<RefreshTokenResponseProps>;
+
 @Injectable()
 export class RefreshToken extends BaseUseCase<
   TRefreshTokenPayload,
@@ -37,7 +38,7 @@ export class RefreshToken extends BaseUseCase<
     const payload = { sub: data.username };
     const accessToken = this.jwtService.sign(payload);
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: 86400,
+      expiresIn: this.envService.variables.jwtLimit,
       secret: this.envService.variables.jwtRefreshKey,
     });
     this._registerUsedRefreshToken(data.refreshToken);
@@ -60,7 +61,7 @@ export class RefreshToken extends BaseUseCase<
     );
 
     const isTokenUsedExpired =
-      tokenUsed && tokenUsed.expired_at.getTime() < new Date().getTime();
+      tokenUsed && tokenUsed.expiredAt.getTime() < new Date().getTime();
     if (isTokenUsedExpired)
       throw new BadRequestException('Refresh Token is Expired');
   }
@@ -86,7 +87,7 @@ export class RefreshToken extends BaseUseCase<
 
     RefreshToken.historyRefreshTokenList.push({
       refreshToken: refreshToken,
-      expired_at: expiredAt,
+      expiredAt: expiredAt,
     });
   }
 }

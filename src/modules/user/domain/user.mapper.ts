@@ -16,6 +16,7 @@ export class UserMapper {
       level: entityProps.level.value,
     };
   }
+
   public static toDomain(raw: UserMongoEntity): UserEntity {
     return new UserEntity(
       {

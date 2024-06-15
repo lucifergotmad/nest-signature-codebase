@@ -17,6 +17,9 @@ import { SHA256 } from 'crypto-js';
 import { OptionalSecretKeyProps } from 'src/core/contract/optional-secret-key.request.contract';
 import { CreateUserRequestProps } from '../contract/user.request.contract';
 import { IRepositoryResponse } from 'src/core/interface/repository-response.interface';
+import { ITransactionService } from 'src/helper/modules/transaction/transaction.interface';
+import { ClientSession } from 'mongoose';
+
 type TCreateUserPayload = PickUseCasePayload<
   CreateUserRequestProps & OptionalSecretKeyProps,
   'data' | 'user'
@@ -29,27 +32,40 @@ export class CreateUser extends BaseUseCase<
   TCreateUserResponse
 > {
   constructor(
-    @InjectUserRepository private userRepository: UserRepositoryPort,
-    private envService: EnvService,
+    @InjectUserRepository private readonly userRepository: UserRepositoryPort,
+    private readonly envService: EnvService,
+    private readonly transactionService: ITransactionService,
   ) {
     super();
   }
 
   public async execute({ data, user }: TCreateUserPayload) {
-    await this.userRepository.findOneAndThrow({ username: data.username });
-
-    const isSecretKeyValid = await this._validateSecretKey(data.secretKey);
-    const level = await this._generateUserLevel(isSecretKeyValid, data?.level);
+    const session = await this.transactionService.startTransaction();
+    let result: IRepositoryResponse;
 
     try {
-      const userEntity = await UserEntity.create({
-        username: data.username,
-        password: data.password,
-        level: level,
-        input_by: user?.user_id,
-      });
+      await session.withTransaction(async () => {
+        await this.userRepository.findOneAndThrow(
+          { username: data.username },
+          'User already exists!',
+          session,
+        );
 
-      const result = await this.userRepository.save(userEntity);
+        const isSecretKeyValid = await this._validateSecretKey(data.secretKey);
+        const level = await this._generateUserLevel(
+          isSecretKeyValid,
+          data?.level,
+        );
+
+        const userEntity = await UserEntity.create({
+          username: data.username,
+          password: data.password,
+          level: level,
+          input_by: user?.user_id,
+        });
+
+        result = await this.userRepository.save(userEntity);
+      });
 
       return new ResponseDTO({ status: HttpStatus.CREATED, data: result });
     } catch (err) {
@@ -61,6 +77,8 @@ export class CreateUser extends BaseUseCase<
           ? HttpStatus.CONFLICT
           : HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    } finally {
+      session.endSession();
     }
   }
 
@@ -70,18 +88,26 @@ export class CreateUser extends BaseUseCase<
     ).toString();
     const isSecretKeyValid = secretKey && secretKey === systemSecretKey;
 
-    if (secretKey && !isSecretKeyValid)
+    if (secretKey && !isSecretKeyValid) {
       throw new BadRequestException('Wrong Key Input. Transaction aborted.');
+    }
 
     return isSecretKeyValid || false;
   }
 
-  private async _generateUserLevel(isSecretKeyValid: boolean, level: string) {
-    if (isSecretKeyValid)
+  private async _generateUserLevel(
+    isSecretKeyValid: boolean,
+    level: string,
+    session?: ClientSession,
+  ) {
+    if (isSecretKeyValid) {
       await this.userRepository.findOneAndThrow(
         { level: 'SU' },
         'Level System Sudah Terdaftar.',
+        session,
       );
+    }
+
     return isSecretKeyValid ? new UserLevel('SU') : new UserLevel(level!);
   }
 }

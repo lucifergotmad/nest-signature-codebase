@@ -9,6 +9,7 @@ export interface IEnv {
   dbConnectionUri: string;
   jwtSecretKey: string;
   jwtRefreshKey: string;
+  jwtLimit: number;
   apiKey: string;
   secretKey: string;
 }
@@ -21,6 +22,7 @@ export class EnvService {
   private readonly _dbConnectionUri: string;
   private readonly _jwtSecretKey: string;
   private readonly _jwtRefreshKey: string;
+  private readonly _jwtLimit: number;
 
   private readonly _apiKey: string;
   private readonly _secretKey: string;
@@ -38,6 +40,7 @@ export class EnvService {
     this._jwtRefreshKey = this.configService.get<string>(
       EnvKey.JWT_REFRESH_KEY,
     );
+    this._jwtLimit = +this.configService.get<number>(EnvKey.JWT_LIMIT);
     this._apiKey = this.configService.get<string>(EnvKey.API_KEY);
     this._secretKey = this.configService.get<string>(EnvKey.SECRET_KEY);
   }
@@ -50,6 +53,7 @@ export class EnvService {
       dbConnectionUri: this._dbConnectionUri,
       jwtSecretKey: this._jwtSecretKey,
       jwtRefreshKey: this._jwtRefreshKey,
+      jwtLimit: this._jwtLimit,
       apiKey: this._apiKey,
       secretKey: this._secretKey,
     };

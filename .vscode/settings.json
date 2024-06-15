@@ -1,5 +1,4 @@
 {
-    // file templates plugin
     "folderTemplates.fileTemplates": {
         "create-mongo-entity": [
             "import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';",
@@ -169,27 +168,22 @@
             ""
         ]
     },
-    // folder templates plugin
     "folderTemplates.structures": [
         {
             "name": "Create Resource",
             "structure": [
-                // 1. creating model
                 {
                     "fileName": "repository/<FTName | paramcase>.mongo-entity.ts",
                     "template": "create-mongo-entity"
                 },
-                // 2. creating entity 
                 {
                     "fileName": "domain/<FTName | paramcase>.entity.ts",
                     "template": "create-entity"
                 },
-                // 3. creating mapper
                 {
                     "fileName": "domain/<FTName | paramcase>.mapper.ts",
                     "template": "create-mapper"
                 },
-                // 4. create repo port
                 {
                     "fileName": "repository/<FTName | paramcase>.repository.port.ts",
                     "template": "create-port-repository"
@@ -199,37 +193,30 @@
                     "fileName": "repository/<FTName | paramcase>.repository.service.ts",
                     "template": "create-repo"
                 },
-                // 6. create repo provider
                 {
                     "fileName": "repository/<FTName | paramcase>.repository.provider.ts",
                     "template": "create-provider-repository"
                 },
-                // 7. create repo module
                 {
                     "fileName": "repository/<FTName | paramcase>.repository.module.ts",
                     "template": "create-module-repository"
                 },
-                // 8. create use-case provider
                 {
                     "fileName": "use-cases/<FTName | paramcase>.use-case.provider.ts",
                     "template": "create provider usecase"
                 },
-                // 9. create use-case module
                 {
                     "fileName": "use-cases/<FTName | paramcase>.use-case.module.ts",
                     "template": "create module usecase"
                 },
-                // 10. create controller
                 {
                     "fileName": "controller/<FTName | paramcase>.controller.ts",
                     "template": "create controller"
                 },
-                // 11. create resource module
                 {
                     "fileName": "<FTName | paramcase>.module.ts",
                     "template": "create module resource"
                 },
-                // 12. create contract
                 {
                     "fileName": "contract/<FTName | paramcase>.request.contract.ts",
                     "template": "create contract"

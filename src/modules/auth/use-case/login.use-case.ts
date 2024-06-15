@@ -14,12 +14,13 @@ import { LoginUserResponseProps } from '../contract/auth.response.contract';
 
 type TLoginPayload = PickUseCasePayload<LoginUserRequestProps, 'data'>;
 type TLoginResponse = ResponseDTO<LoginUserResponseProps>;
+
 @Injectable()
 export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
   constructor(
-    @InjectUserRepository private userRepository: UserRepositoryPort,
-    private jwtService: JwtService,
-    private envService: EnvService,
+    @InjectUserRepository private readonly userRepository: UserRepositoryPort,
+    private readonly jwtService: JwtService,
+    private readonly envService: EnvService,
   ) {
     super();
   }
@@ -45,7 +46,7 @@ export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
 
     const accessToken = this.jwtService.sign(jwtPayload);
     const refreshToken = this.jwtService.sign(jwtPayload, {
-      expiresIn: 86400,
+      expiresIn: this.envService.variables.jwtLimit,
       secret: this.envService.variables.jwtRefreshKey,
     });
 

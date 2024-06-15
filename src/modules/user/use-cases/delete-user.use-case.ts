@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { ResponseDTO } from 'src/core/base/http/response.dto.base';
 import {
   BaseUseCase,
@@ -6,6 +6,8 @@ import {
 } from 'src/core/base/module/use-case.base';
 import { InjectUserRepository } from '../repository/user.repository.provider';
 import { UserRepositoryPort } from 'src/modules/user/repository/user.repository.port';
+import { ITransactionService } from 'src/helper/modules/transaction/transaction.interface';
+import { ResponseException } from 'src/core/exceptions/response-http-exception';
 
 type TDeleteUserPayload = Pick<IUseCasePayload<never>, '_id'>;
 type TDeleteUserResponse = ResponseDTO;
@@ -16,23 +18,29 @@ export class DeleteUser extends BaseUseCase<
   TDeleteUserResponse
 > {
   constructor(
-    @InjectUserRepository private userRepository: UserRepositoryPort,
+    @InjectUserRepository private readonly userRepository: UserRepositoryPort,
+    private readonly transactionService: ITransactionService,
   ) {
     super();
   }
 
   public async execute({ _id }: TDeleteUserPayload): Promise<ResponseDTO> {
+    const session = await this.transactionService.startTransaction();
+
     try {
-      await this.userRepository.delete({ _id });
+      await session.withTransaction(async () => {
+        await this.userRepository.delete({ _id }, session);
+      });
+
+      return new ResponseDTO({
+        status: HttpStatus.OK,
+        message: `${_id} documents deleted!`,
+      });
     } catch (err) {
       this.logger.error(err);
-      if (err instanceof HttpException) throw err;
-
-      throw new HttpException(err.message, 500);
+      throw new ResponseException(err.message, err.status, err.trace);
+    } finally {
+      session.endSession();
     }
-    return new ResponseDTO({
-      status: HttpStatus.OK,
-      message: `${_id} documents deleted!`,
-    });
   }
 }
