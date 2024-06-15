@@ -7,7 +7,7 @@
             "",
             "@Schema({ collection: '<FTName | snakecase>' })",
             "export class <FTName | pascalcase>MongoEntity extends BaseMongoEntity<typeof <FTName | pascalcase>MongoEntity> {",
-            "  // Put your schema here",
+            "  @Prop({ required: true })",
             "  name: string",
             "}",
             "",
@@ -19,7 +19,6 @@
             "import { Entity } from 'src/core/base/domain/entity';",
             "",
             "export interface <FTName | pascalcase>Props {",
-            "  // put field interface here",
             "  name: string",
             "}",
             "",
@@ -49,7 +48,6 @@
             "",
             "    return {",
             "      ...entityProps",
-            "      // add domain field here",
             "    }",
             "  }",
             "  public static toDomain(",
@@ -57,7 +55,6 @@
             "  ): <FTName | pascalcase>Entity {",
             "    return new <FTName | pascalcase>Entity({",
             "      name: raw.name",
-            "      // add mongo field here",
             "    })",
             "  }",
             "}",
@@ -70,7 +67,7 @@
             "",
             "export interface <FTName | pascalcase>RepositoryPort",
             "  extends BaseRepositoryPort<<FTName | pascalcase>Entity, <FTName | pascalcase>MongoEntity> {",
-            "\t__init__(): void //this just a boilerplate, you can delete it.",
+            "\t__init__(): void",
             "}",
             ""
         ],
@@ -96,9 +93,7 @@
             "    super(<FTName | pascalcase>Model, <FTName | pascalcase>Mapper)",
             "  }",
             "",
-            "  __init__(): void {",
-            "    //this just a boilerplate, you can delete it",
-            "  }",
+            "  __init__(): void {}",
             "}",
             ""
         ],
@@ -152,9 +147,7 @@
             "",
             "@Controller('v1/<FTName | paramcase>')",
             "export class <FTName | pascalcase>Controller {",
-            "  constructor() {",
-            "    // fill above parentheses with use case / repository dependencies",
-            "  }",
+            "  constructor() {}",
             "}",
             ""
         ],
@@ -218,12 +211,12 @@
                 },
                 // 8. create use-case provider
                 {
-                    "fileName": "use-case/<FTName | paramcase>.use-case.provider.ts",
+                    "fileName": "use-cases/<FTName | paramcase>.use-case.provider.ts",
                     "template": "create provider usecase"
                 },
                 // 9. create use-case module
                 {
-                    "fileName": "use-case/<FTName | paramcase>.use-case.module.ts",
+                    "fileName": "use-cases/<FTName | paramcase>.use-case.module.ts",
                     "template": "create module usecase"
                 },
                 // 10. create controller
