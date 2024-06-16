@@ -46,13 +46,14 @@ export class RefreshToken extends BaseUseCase<
     return new ResponseDTO({
       status: HttpStatus.OK,
       data: { accessToken, refreshToken: refreshToken },
+      message: 'Refresh token success!',
     });
   }
 
-  private _validateRefreshToken(refreshToken: string, user_id: string) {
+  private _validateRefreshToken(refreshToken: string, username: string) {
     const tokenVerified = this._verifyJwt(refreshToken);
 
-    if (tokenVerified?.sub != user_id) {
+    if (tokenVerified?.sub != username) {
       throw new BadRequestException('Refresh token is not matched.');
     }
 

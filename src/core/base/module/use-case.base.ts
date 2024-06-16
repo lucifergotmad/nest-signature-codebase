@@ -3,7 +3,7 @@ import { ClientSession } from 'mongoose';
 import { CustomLogger } from 'src/infra/logger/logger';
 
 export interface JwtDecoded {
-  user_id?: string;
+  username?: string;
 }
 
 export interface IUseCasePayload<T> {

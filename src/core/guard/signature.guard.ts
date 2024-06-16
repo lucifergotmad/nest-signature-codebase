@@ -32,6 +32,9 @@ export class SignatureGuard implements CanActivate {
       (req.query['authorization'] as string) ||
       '';
 
+    console.log(signature);
+    console.log(timestamp);
+
     const isValidSignature = this.helpers.signature.validateSignature(
       signature,
       timestamp,

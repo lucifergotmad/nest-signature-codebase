@@ -59,6 +59,7 @@ export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
         level: userObject.level,
         username: userObject.username,
       },
+      message: 'Log in success!',
     });
   }
 }

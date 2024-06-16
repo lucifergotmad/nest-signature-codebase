@@ -61,13 +61,17 @@ export class CreateUser extends BaseUseCase<
           username: data.username,
           password: data.password,
           level: level,
-          input_by: user?.user_id,
+          input_by: user?.username,
         });
 
         result = await this.userRepository.save(userEntity);
       });
 
-      return new ResponseDTO({ status: HttpStatus.CREATED, data: result });
+      return new ResponseDTO({
+        status: HttpStatus.CREATED,
+        data: result,
+        message: 'Create user success!',
+      });
     } catch (err) {
       this.logger.error(err);
 
@@ -83,9 +87,11 @@ export class CreateUser extends BaseUseCase<
   }
 
   private async _validateSecretKey(secretKey: string) {
+    console.log(secretKey);
     const systemSecretKey = SHA256(
       this.envService.variables.secretKey,
     ).toString();
+    console.log(systemSecretKey);
     const isSecretKeyValid = secretKey && secretKey === systemSecretKey;
 
     if (secretKey && !isSecretKeyValid) {

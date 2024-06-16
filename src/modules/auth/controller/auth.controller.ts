@@ -28,7 +28,7 @@ export class AuthController {
 
     return this.createUser.execute({
       data: { ...body, secretKey },
-      user: { user_id: 'SYSTEM' },
+      user: { username: 'SYSTEM' },
     });
   }
 
