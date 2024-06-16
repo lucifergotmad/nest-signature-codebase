@@ -87,11 +87,9 @@ export class CreateUser extends BaseUseCase<
   }
 
   private async _validateSecretKey(secretKey: string) {
-    console.log(secretKey);
     const systemSecretKey = SHA256(
       this.envService.variables.secretKey,
     ).toString();
-    console.log(systemSecretKey);
     const isSecretKeyValid = secretKey && secretKey === systemSecretKey;
 
     if (secretKey && !isSecretKeyValid) {
