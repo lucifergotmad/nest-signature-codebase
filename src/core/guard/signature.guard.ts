@@ -4,15 +4,15 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SignatureService } from '../../helper/modules/signature/signature.service';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorator/public.decorator';
+import { Helpers } from 'src/helper/helper.service';
 
 @Injectable()
 export class SignatureGuard implements CanActivate {
   constructor(
-    private signatureService: SignatureService,
-    private reflector: Reflector,
+    private readonly helpers: Helpers,
+    private readonly reflector: Reflector,
   ) {}
 
   canActivate(context: ExecutionContext) {
@@ -32,7 +32,7 @@ export class SignatureGuard implements CanActivate {
       (req.query['authorization'] as string) ||
       '';
 
-    const isValidSignature = this.signatureService.validateSignature(
+    const isValidSignature = this.helpers.signature.validateSignature(
       signature,
       timestamp,
       accessToken.slice('bearer '.length),

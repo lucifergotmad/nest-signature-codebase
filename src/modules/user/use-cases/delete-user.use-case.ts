@@ -6,8 +6,8 @@ import {
 } from 'src/core/base/module/use-case.base';
 import { InjectUserRepository } from '../repository/user.repository.provider';
 import { UserRepositoryPort } from 'src/modules/user/repository/user.repository.port';
-import { ITransactionService } from 'src/helper/modules/transaction/transaction.interface';
 import { ResponseException } from 'src/core/exceptions/response-http-exception';
+import { Helpers } from 'src/helper/helper.service';
 
 type TDeleteUserPayload = Pick<IUseCasePayload<never>, '_id'>;
 type TDeleteUserResponse = ResponseDTO;
@@ -19,13 +19,13 @@ export class DeleteUser extends BaseUseCase<
 > {
   constructor(
     @InjectUserRepository private readonly userRepository: UserRepositoryPort,
-    private readonly transactionService: ITransactionService,
+    private readonly helpers: Helpers,
   ) {
     super();
   }
 
   public async execute({ _id }: TDeleteUserPayload): Promise<ResponseDTO> {
-    const session = await this.transactionService.startTransaction();
+    const session = await this.helpers.transaction.startTransaction();
 
     try {
       await session.withTransaction(async () => {

@@ -7,9 +7,9 @@ import { ResourceModule } from './modules/resource.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ...databaseProviders,
     HelperModule,
     ResourceModule,
-    ...databaseProviders,
   ],
 })
 export class AppModule {}

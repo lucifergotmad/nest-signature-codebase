@@ -17,8 +17,8 @@ import { SHA256 } from 'crypto-js';
 import { OptionalSecretKeyProps } from 'src/core/contract/optional-secret-key.request.contract';
 import { CreateUserRequestProps } from '../contract/user.request.contract';
 import { IRepositoryResponse } from 'src/core/interface/repository-response.interface';
-import { ITransactionService } from 'src/helper/modules/transaction/transaction.interface';
 import { ClientSession } from 'mongoose';
+import { Helpers } from 'src/helper/helper.service';
 
 type TCreateUserPayload = PickUseCasePayload<
   CreateUserRequestProps & OptionalSecretKeyProps,
@@ -34,13 +34,13 @@ export class CreateUser extends BaseUseCase<
   constructor(
     @InjectUserRepository private readonly userRepository: UserRepositoryPort,
     private readonly envService: EnvService,
-    private readonly transactionService: ITransactionService,
+    private readonly helpers: Helpers,
   ) {
     super();
   }
 
   public async execute({ data, user }: TCreateUserPayload) {
-    const session = await this.transactionService.startTransaction();
+    const session = await this.helpers.transaction.startTransaction();
     let result: IRepositoryResponse;
 
     try {

@@ -9,8 +9,8 @@ import { PickUseCasePayload } from 'src/core/base/types/pick-use-case-payload.ty
 import { ObjectIdVO } from 'src/core/value-object/object-id.value-object';
 import { UserRepositoryPort } from 'src/modules/user/repository/user.repository.port';
 import { UpdateUserRequestProps } from '../contract/user.request.contract';
-import { ITransactionService } from 'src/helper/modules/transaction/transaction.interface';
 import { ResponseException } from 'src/core/exceptions/response-http-exception';
+import { Helpers } from 'src/helper/helper.service';
 
 type TUpdateUserPayload = PickUseCasePayload<
   UpdateUserRequestProps,
@@ -25,13 +25,13 @@ export class UpdateUser extends BaseUseCase<
 > {
   constructor(
     @InjectUserRepository private readonly userRepository: UserRepositoryPort,
-    private readonly transactionService: ITransactionService,
+    private readonly helpers: Helpers,
   ) {
     super();
   }
 
   async execute({ data, _id }: TUpdateUserPayload) {
-    const session = await this.transactionService.startTransaction();
+    const session = await this.helpers.transaction.startTransaction();
 
     try {
       await session.withTransaction(async () => {
