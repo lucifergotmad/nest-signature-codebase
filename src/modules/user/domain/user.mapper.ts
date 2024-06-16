@@ -23,7 +23,7 @@ export class UserMapper {
         username: raw.username,
         password: raw.password,
         level: new UserLevel(raw.level),
-        input_by: raw.input_by,
+        created_by: raw.created_by,
       },
       raw._id,
     );

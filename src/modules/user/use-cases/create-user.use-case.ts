@@ -61,7 +61,7 @@ export class CreateUser extends BaseUseCase<
           username: data.username,
           password: data.password,
           level: level,
-          input_by: user?.username,
+          created_by: user?.username,
         });
 
         result = await this.userRepository.save(userEntity);

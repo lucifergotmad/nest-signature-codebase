@@ -7,7 +7,7 @@ export interface UserProps {
   username: string;
   password: string;
   level: UserLevel;
-  input_by: string;
+  created_by: string;
 }
 
 export interface UpdateUserProps {
@@ -29,7 +29,7 @@ export class UserEntity extends Entity<UserProps> {
       username: props.username,
       password: hashPassword,
       level: props.level,
-      input_by: props.input_by,
+      created_by: props.created_by,
     });
   }
 

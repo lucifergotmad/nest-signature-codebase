@@ -13,16 +13,10 @@ export class UserMongoEntity extends BaseMongoEntity<typeof UserMongoEntity> {
   level: string;
 
   @Prop()
-  input_by?: string;
+  created_by?: string;
 
   @Prop()
-  input_date?: Date;
-
-  @Prop()
-  edit_by?: string;
-
-  @Prop()
-  edit_date?: Date;
+  created_at?: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserMongoEntity);
