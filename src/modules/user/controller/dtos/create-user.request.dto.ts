@@ -1,9 +1,9 @@
 import { IsString } from 'class-validator';
-import { RegisterUserRequestDTO } from 'src/modules/auth/controller/dto/register-user-request.dto';
 import { CreateUserRequestProps } from '../../contract/user.request.contract';
+import { RegisterSuperUserRequestDTO } from 'src/modules/auth/controller/dto/register-super-user-request.dto';
 
 export class CreateUserRequestDTO
-  extends RegisterUserRequestDTO
+  extends RegisterSuperUserRequestDTO
   implements CreateUserRequestProps
 {
   @IsString()

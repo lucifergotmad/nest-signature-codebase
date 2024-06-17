@@ -1,7 +1,7 @@
 import { IsRequiredString } from 'src/core/decorator/required-string.decorator';
-import { RegisterUserRequestProps } from '../../contract/auth.request.contract';
+import { SignInUserRequestProps } from '../../contract/auth.request.contract';
 
-export class RegisterUserRequestDTO implements RegisterUserRequestProps {
+export class SignInRequestDTO implements SignInUserRequestProps {
   @IsRequiredString()
   username: string;
 

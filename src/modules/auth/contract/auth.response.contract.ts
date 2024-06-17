@@ -1,4 +1,4 @@
-export interface LoginUserResponseProps {
+export interface SignInUserResponseProps {
   accessToken: string;
   refreshToken: string;
   level: string;

@@ -9,14 +9,14 @@ import { InjectUserRepository } from 'src/modules/user/repository/user.repositor
 import { UserEntity } from 'src/modules/user/domain/user.entity';
 import { UserRepositoryPort } from '../../user/repository/user.repository.port';
 import { UserMapper } from 'src/modules/user/domain/user.mapper';
-import { LoginUserRequestProps } from '../contract/auth.request.contract';
-import { LoginUserResponseProps } from '../contract/auth.response.contract';
+import { SignInUserRequestProps } from '../contract/auth.request.contract';
+import { SignInUserResponseProps } from '../contract/auth.response.contract';
 
-type TLoginPayload = PickUseCasePayload<LoginUserRequestProps, 'data'>;
-type TLoginResponse = ResponseDTO<LoginUserResponseProps>;
+type TSignInPayload = PickUseCasePayload<SignInUserRequestProps, 'data'>;
+type TSignInResponse = ResponseDTO<SignInUserResponseProps>;
 
 @Injectable()
-export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
+export class SignInUser extends BaseUseCase<TSignInPayload, TSignInResponse> {
   constructor(
     @InjectUserRepository private readonly userRepository: UserRepositoryPort,
     private readonly jwtService: JwtService,
@@ -25,7 +25,7 @@ export class LoginUser extends BaseUseCase<TLoginPayload, TLoginResponse> {
     super();
   }
 
-  public async execute({ data }: TLoginPayload) {
+  public async execute({ data }: TSignInPayload) {
     const userData = await this.userRepository.findOneOrThrow(
       { username: data.username },
       'Username atau password salah.',
