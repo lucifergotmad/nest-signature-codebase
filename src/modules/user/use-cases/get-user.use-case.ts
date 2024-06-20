@@ -31,6 +31,8 @@ export class GetUser extends BaseUseCase<TGetUserPayload, TGetUserResponse> {
         _id: userObject._id,
         level: userObject.level,
         username: userObject.username,
+        fullname: userObject.fullname,
+        email: userObject.email,
       };
     });
 

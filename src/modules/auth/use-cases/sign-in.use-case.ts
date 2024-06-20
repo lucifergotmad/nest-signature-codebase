@@ -58,6 +58,8 @@ export class SignInUser extends BaseUseCase<TSignInPayload, TSignInResponse> {
         refreshToken,
         level: userObject.level,
         username: userObject.username,
+        fullname: userObject.fullname,
+        email: userObject.email,
       },
       message: 'Log in success!',
     });

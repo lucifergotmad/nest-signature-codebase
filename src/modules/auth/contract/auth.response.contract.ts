@@ -3,6 +3,8 @@ export interface SignInUserResponseProps {
   refreshToken: string;
   level: string;
   username: string;
+  fullname: string;
+  email: string;
 }
 
 export interface RefreshTokenResponseProps {
