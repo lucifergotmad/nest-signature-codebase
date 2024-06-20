@@ -28,7 +28,7 @@ export class SignInUser extends BaseUseCase<TSignInPayload, TSignInResponse> {
   public async execute({ data }: TSignInPayload) {
     const userData = await this.userRepository.findOneOrThrow(
       { username: data.username },
-      'Username atau password salah.',
+      'Username or Password is Incorrect.',
     );
 
     const userProps = userData.propsCopy;

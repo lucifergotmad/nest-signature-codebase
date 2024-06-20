@@ -14,7 +14,7 @@ export class ObjectIdVO extends ValueObject<string> {
 
   protected validate({ value }: DomainPrimitive<string>) {
     if (!isValidObjectId(value)) {
-      throw new BadRequestException('Value ObjectID tidak valid.');
+      throw new BadRequestException('Invalid ObjectID value!');
     }
   }
 }
