@@ -3,7 +3,10 @@ import { UpdateUserRequestProps } from '../../contract/user.request.contract';
 
 export class UpdateUserRequestDTO implements UpdateUserRequestProps {
   @IsRequiredString()
-  username: string;
+  fullname: string;
+
+  @IsRequiredString()
+  email: string;
 
   @IsRequiredString()
   level: string;

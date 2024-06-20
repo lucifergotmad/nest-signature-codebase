@@ -28,7 +28,7 @@ export class SignInUser extends BaseUseCase<TSignInPayload, TSignInResponse> {
   public async execute({ data }: TSignInPayload) {
     const userData = await this.userRepository.findOneOrThrow(
       { username: data.username },
-      'Username or Password is Incorrect.',
+      'Username or Password is Incorrect!',
     );
 
     const userProps = userData.propsCopy;
@@ -37,7 +37,7 @@ export class SignInUser extends BaseUseCase<TSignInPayload, TSignInResponse> {
       userProps.password,
     );
     if (!passwordMatch) {
-      throw new UnauthorizedException('Username or Password is Incorrect.');
+      throw new UnauthorizedException('Username or Password is Incorrect!');
     }
 
     const jwtPayload = {

@@ -19,6 +19,7 @@ import { CreateUserRequestProps } from '../contract/user.request.contract';
 import { IRepositoryResponse } from 'src/core/interface/repository-response.interface';
 import { ClientSession } from 'mongoose';
 import { Helpers } from 'src/helper/helper.service';
+import { Email } from '../domain/value-objects/email.value-object';
 
 type TCreateUserPayload = PickUseCasePayload<
   CreateUserRequestProps & OptionalSecretKeyProps,
@@ -47,7 +48,13 @@ export class CreateUser extends BaseUseCase<
       await session.withTransaction(async () => {
         await this.userRepository.findOneAndThrow(
           { username: data.username },
-          'User already exists!',
+          'Username already exists!',
+          session,
+        );
+
+        await this.userRepository.findOneAndThrow(
+          { email: data.email },
+          'Email already exists!',
           session,
         );
 
@@ -58,6 +65,8 @@ export class CreateUser extends BaseUseCase<
         );
 
         const userEntity = await UserEntity.create({
+          email: new Email(data.email),
+          fullname: data.fullname,
           username: data.username,
           password: data.password,
           level: level,

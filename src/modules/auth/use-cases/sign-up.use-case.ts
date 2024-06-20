@@ -10,6 +10,7 @@ import { Helpers } from 'src/helper/helper.service';
 import { ResponseException } from 'src/core/exceptions/response-http-exception';
 import { UserEntity } from 'src/modules/user/domain/user.entity';
 import { UserLevel } from 'src/modules/user/domain/value-objects/user-level.value-object';
+import { Email } from 'src/modules/user/domain/value-objects/email.value-object';
 
 type TSignUpPayload = PickUseCasePayload<SignUpUserRequestProps, 'data'>;
 type TSignUpResponse = ResponseDTO<IRepositoryResponse>;
@@ -34,14 +35,22 @@ export class SignUpUser extends BaseUseCase<TSignUpPayload, TSignUpResponse> {
 
         await this.userRepository.findOneAndThrow(
           { username: data.username },
-          'User already exists!',
+          'Username already exists!',
+          session,
+        );
+
+        await this.userRepository.findOneAndThrow(
+          { email: data.email },
+          'Username already exists!',
           session,
         );
 
         const userEntity = await UserEntity.create({
+          fullname: data.fullname,
           username: data.username,
           password: data.password,
           level: new UserLevel('ADMIN'),
+          email: new Email(data.email),
           created_by: data.username,
         });
 

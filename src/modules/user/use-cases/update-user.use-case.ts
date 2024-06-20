@@ -11,6 +11,8 @@ import { UserRepositoryPort } from 'src/modules/user/repository/user.repository.
 import { UpdateUserRequestProps } from '../contract/user.request.contract';
 import { ResponseException } from 'src/core/exceptions/response-http-exception';
 import { Helpers } from 'src/helper/helper.service';
+import { UserLevel } from '../domain/value-objects/user-level.value-object';
+import { Email } from '../domain/value-objects/email.value-object';
 
 type TUpdateUserPayload = PickUseCasePayload<
   UpdateUserRequestProps,
@@ -41,7 +43,11 @@ export class UpdateUser extends BaseUseCase<
         );
         if (!userEntity) throw new NotFoundException('User not found!');
 
-        userEntity.updateUser(data);
+        userEntity.updateUser({
+          ...data,
+          level: new UserLevel(data.level),
+          email: new Email(data.email),
+        });
 
         await this.userRepository.updateOne(
           { _id: userEntity.propsCopy._id },

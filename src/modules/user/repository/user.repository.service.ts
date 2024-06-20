@@ -20,8 +20,4 @@ export class UserRepository
   ) {
     super(userModel, UserMapper);
   }
-
-  async findActiveUser(): Promise<Array<UserMongoEntity>> {
-    return await this.userModel.find({ status: true });
-  }
 }

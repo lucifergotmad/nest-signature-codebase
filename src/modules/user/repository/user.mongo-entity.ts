@@ -3,6 +3,12 @@ import { BaseMongoEntity } from 'src/core/base/domain/mongo-entity';
 
 @Schema({ collection: 'tm_users' })
 export class UserMongoEntity extends BaseMongoEntity<typeof UserMongoEntity> {
+  @Prop({ required: true })
+  fullname: string;
+
+  @Prop({ required: true, unique: true })
+  email: string;
+
   @Prop({ required: true, unique: true })
   username: string;
 

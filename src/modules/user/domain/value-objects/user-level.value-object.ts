@@ -16,6 +16,6 @@ export class UserLevel extends ValueObject<string> {
   }
 
   private _getValidLevel() {
-    return ['ADMIN', 'OWNER', 'SUPERVISOR', 'SU']; // LEVEL SU WILL BE USED ONE TIME ONLY (POST APP DEPLOY), ALWAYS DELETE USER WITH THIS LEVEL AFTER USE IT.
+    return ['ADMIN', 'OWNER', 'SUPERVISOR', 'SU'];
   }
 }
