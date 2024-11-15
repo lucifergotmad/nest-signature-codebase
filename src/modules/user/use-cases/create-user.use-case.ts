@@ -11,7 +11,7 @@ import { EnvService } from 'src/infra/config/env.service';
 import { UserRepositoryPort } from '../repository/user.repository.port';
 import { InjectUserRepository } from '../repository/user.repository.provider';
 import { UserEntity } from '../domain/user.entity';
-import { UserLevel } from '../domain/value-objects/user-level.value-object';
+import { UserRole } from '../domain/value-objects/user-role.value-object';
 import { PickUseCasePayload } from 'src/core/base/types/pick-use-case-payload.type';
 import { SHA256 } from 'crypto-js';
 import { OptionalSecretKeyProps } from 'src/core/contract/optional-secret-key.request.contract';
@@ -20,6 +20,7 @@ import { IRepositoryResponse } from 'src/core/interface/repository-response.inte
 import { ClientSession } from 'mongoose';
 import { Helpers } from 'src/helper/helper.service';
 import { Email } from '../domain/value-objects/email.value-object';
+import { Role } from 'src/core/constant/app';
 
 type TCreateUserPayload = PickUseCasePayload<
   CreateUserRequestProps & OptionalSecretKeyProps,
@@ -59,17 +60,18 @@ export class CreateUser extends BaseUseCase<
         );
 
         const isSecretKeyValid = await this._validateSecretKey(data.secretKey);
-        const level = await this._generateUserLevel(
-          isSecretKeyValid,
-          data?.level,
-        );
+        const role = await this._generateUserRole(isSecretKeyValid, data?.role);
 
         const userEntity = await UserEntity.create({
           email: new Email(data.email),
+          firstname: data.firstname,
+          lastname: data.lastname,
           fullname: data.fullname,
           username: data.username,
           password: data.password,
-          level: level,
+          role: role,
+          is_2fa_enabled: false,
+          is_email_verified: false,
           created_by: user?.username,
         });
 
@@ -108,19 +110,21 @@ export class CreateUser extends BaseUseCase<
     return isSecretKeyValid || false;
   }
 
-  private async _generateUserLevel(
+  private async _generateUserRole(
     isSecretKeyValid: boolean,
-    level: string,
+    role: string,
     session?: ClientSession,
   ) {
     if (isSecretKeyValid) {
       await this.userRepository.findOneAndThrow(
-        { level: 'SU' },
+        { role: Role.Developer },
         'Level System Sudah Terdaftar.',
         session,
       );
     }
 
-    return isSecretKeyValid ? new UserLevel('SU') : new UserLevel(level!);
+    return isSecretKeyValid
+      ? new UserRole(Role.Developer)
+      : new UserRole(role!);
   }
 }

@@ -2,7 +2,7 @@ import { UserEntity } from './user.entity';
 import { UserMongoEntity } from '../repository/user.mongo-entity';
 import { DbMapper, MongoEntityProps } from 'src/core/base/domain/db-mapper';
 import { staticImplements } from 'src/core/decorator/static-implements.decorator';
-import { UserLevel } from './value-objects/user-level.value-object';
+import { UserRole } from './value-objects/user-role.value-object';
 import { Email } from './value-objects/email.value-object';
 
 @staticImplements<DbMapper<UserEntity, UserMongoEntity>>()
@@ -15,18 +15,25 @@ export class UserMapper {
     return {
       ...entityProps,
       email: entityProps.email.value,
-      level: entityProps.level.value,
+      role: entityProps.role.value,
     };
   }
 
   public static toDomain(raw: UserMongoEntity): UserEntity {
     return new UserEntity(
       {
+        firstname: raw.firstname,
+        lastname: raw.lastname,
         fullname: raw.fullname,
         username: raw.username,
         password: raw.password,
-        level: new UserLevel(raw.level),
+        phone: raw.phone,
+        role: new UserRole(raw.role),
         email: new Email(raw.email),
+        communication: raw.communication,
+        is_2fa_enabled: raw.is_2fa_enabled,
+        is_email_verified: raw.is_email_verified,
+        secret_2fa: raw.secret_2fa,
         created_by: raw.created_by,
       },
       raw._id,

@@ -11,7 +11,7 @@ import { AllExceptionFilter } from './core/base/http/base-http-exception.filter'
 import { DebugLoggerInterceptor } from './core/interceptor/debug-logger.interceptor';
 
 async function bootstrap() {
-  const httpsMode = !!Number(process.env.HTTPS_MODE);
+  const httpsMode = !!Number(process.env.IS_SECURE);
   const secureOptions: NestApplicationOptions =
     generateHttpsModeOption(httpsMode);
 
@@ -35,7 +35,7 @@ async function bootstrap() {
 
   await app.listen(port, host, () => {
     logger.log(`Application Started at port: ${port}, httpsMode: ${httpsMode}`);
-    if (process.env.MODE == 'DEVELOPMENT')
+    if (process.env.MODE == 'development')
       logger.log(`Current IP: ${ip.address()}`);
   });
 }
@@ -45,7 +45,7 @@ function generateHttpsModeOption(httpsMode: boolean): NestApplicationOptions {
     /**
      * Enter Your Https Certificate using below code
      *
-     * @hint make sure you set 'HTTPS_MODE' field in env file to 1
+     * @hint make sure you set 'IS_SECURE' field in env file to 1
      * @tips recommended for using absolute root path (/)
      * @optional __dirname + path/to/file
      */

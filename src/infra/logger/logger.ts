@@ -57,7 +57,7 @@ export class CustomLogger implements LoggerService {
   }
 
   private isProduction() {
-    return process.env.MODE === 'PRODUCTION';
+    return process.env.MODE === 'production';
   }
 
   private createConsoleTransport(): ConsoleTransportInstance {

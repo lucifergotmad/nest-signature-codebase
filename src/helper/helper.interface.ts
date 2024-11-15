@@ -1,3 +1,4 @@
+import { ICacheService } from './modules/cache/cache.interface';
 import { IDateService } from './modules/date/date.interface';
 import { IHashService } from './modules/hash/hash.interface';
 import { ISignatureService } from './modules/signature/signature.interface';
@@ -7,5 +8,6 @@ export interface IHelpers {
   date: IDateService;
   hash: IHashService;
   signature: ISignatureService;
+  cache: ICacheService;
   transaction: ITransactionService;
 }

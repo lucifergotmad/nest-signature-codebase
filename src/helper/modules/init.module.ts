@@ -3,6 +3,7 @@ import { EnvModule } from 'src/infra/config/env.module';
 import { DateService } from './date/date.service';
 import { HashService } from './hash/hash.service';
 import { SignatureService } from './signature/signature.service';
+import { CacheService } from './cache/cache.service';
 import { transactionProvider } from './transaction/transaction.provider';
 
 @Module({
@@ -11,8 +12,15 @@ import { transactionProvider } from './transaction/transaction.provider';
     DateService,
     HashService,
     SignatureService,
+    CacheService,
     ...transactionProvider,
   ],
-  exports: [DateService, HashService, SignatureService, ...transactionProvider],
+  exports: [
+    DateService,
+    HashService,
+    SignatureService,
+    CacheService,
+    ...transactionProvider,
+  ],
 })
 export class InitModule {}

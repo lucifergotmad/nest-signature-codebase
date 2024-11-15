@@ -1,12 +1,19 @@
 export interface UpdateUserRequestProps {
-  fullname: string;
+  username: string;
+  password: string;
   email: string;
-  level: string;
+  firstname: string;
+  lastname: string;
+  fullname: string;
+  is_2fa_enabled: boolean;
+  is_email_verified: boolean;
 }
 
 export interface CreateUserRequestProps {
-  level?: string;
+  role?: string;
   username: string;
+  firstname: string;
+  lastname: string;
   fullname: string;
   email: string;
   password: string;

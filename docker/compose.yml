@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: ${MODE:-development}
+    ports:
+      - "${PORTS:-3001}:3001"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/usr/src/app
+      - /usr/src/app/node_modules
+    profiles:
+      - development

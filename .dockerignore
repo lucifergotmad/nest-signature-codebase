@@ -1,0 +1,37 @@
+# Ignore node_modules (dependencies are installed in the container)
+node_modules
+
+# Ignore local npm/yarn logs and lock files
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+
+# Ignore environment files (for security)
+.env
+
+# Ignore Docker-related files
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Ignore logs and cache files
+logs
+*.log
+.cache/
+
+# Ignore build outputs (NestJS builds to /dist by default)
+dist
+build
+
+# Ignore Git and editor-specific files
+.git
+.gitignore
+.vscode/
+.idea/
+
+# Ignore test files and coverage reports
+test
+tests
+*.spec.ts
+*.spec.js
+coverage/

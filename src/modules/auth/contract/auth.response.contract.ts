@@ -1,7 +1,7 @@
 export interface SignInUserResponseProps {
   accessToken: string;
   refreshToken: string;
-  level: string;
+  role: string;
   username: string;
   fullname: string;
   email: string;

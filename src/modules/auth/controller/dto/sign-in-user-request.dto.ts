@@ -3,7 +3,7 @@ import { SignInUserRequestProps } from '../../contract/auth.request.contract';
 
 export class SignInRequestDTO implements SignInUserRequestProps {
   @IsRequiredString()
-  username: string;
+  email: string;
 
   @IsRequiredString()
   password: string;

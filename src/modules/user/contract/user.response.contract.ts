@@ -4,5 +4,5 @@ export interface UserResponseProps extends IId {
   fullname: string;
   email: string;
   username: string;
-  level: string;
+  role: string;
 }

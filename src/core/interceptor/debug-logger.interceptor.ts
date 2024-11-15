@@ -23,7 +23,7 @@ export class DebugLoggerInterceptor implements NestInterceptor {
       'Incoming Request.',
       `(${req.method})${req.originalUrl.split('?')[0]}`,
     );
-    if (process.env.MODE === 'DEVELOPMENT') {
+    if (process.env.MODE === 'development') {
       if (typeof body === 'object' && Object.keys(body).length) {
         this.logger.debug('Body' + JSON.stringify(body, null, 2));
       }

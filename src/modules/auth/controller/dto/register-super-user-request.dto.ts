@@ -5,6 +5,12 @@ export class RegisterSuperUserRequestDTO
   implements RegisterSuperUserRequestProps
 {
   @IsRequiredString()
+  firstname: string;
+
+  @IsRequiredString()
+  lastname: string;
+
+  @IsRequiredString()
   fullname: string;
 
   @IsRequiredString()

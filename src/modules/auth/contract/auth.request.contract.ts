@@ -3,11 +3,13 @@ export interface AuthRefreshTokenRequestProps {
   refreshToken: string;
 }
 export interface SignInUserRequestProps {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface SignUpUserRequestProps {
+  firstname: string;
+  lastname: string;
   fullname: string;
   email: string;
   username: string;
@@ -16,6 +18,8 @@ export interface SignUpUserRequestProps {
 }
 
 export interface RegisterSuperUserRequestProps {
+  firstname: string;
+  lastname: string;
   fullname: string;
   email: string;
   username: string;

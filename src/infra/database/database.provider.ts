@@ -3,7 +3,7 @@ import { EnvModule } from '../config/env.module';
 import { EnvService } from '../config/env.service';
 import { DATABASE_OPTION } from '../../core/constant/database/database-option.const';
 
-export const databaseProviders = [
+export const DatabaseProviders = [
   MongooseModule.forRootAsync({
     imports: [EnvModule],
     inject: [EnvService],

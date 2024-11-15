@@ -7,5 +7,5 @@ export class CreateUserRequestDTO
   implements CreateUserRequestProps
 {
   @IsOptionalString()
-  level?: string;
+  role?: string;
 }

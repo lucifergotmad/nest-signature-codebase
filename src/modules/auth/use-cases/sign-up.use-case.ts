@@ -9,8 +9,9 @@ import { UserRepositoryPort } from 'src/modules/user/repository/user.repository.
 import { Helpers } from 'src/helper/helper.service';
 import { ResponseException } from 'src/core/exceptions/response-http-exception';
 import { UserEntity } from 'src/modules/user/domain/user.entity';
-import { UserLevel } from 'src/modules/user/domain/value-objects/user-level.value-object';
+import { UserRole } from 'src/modules/user/domain/value-objects/user-role.value-object';
 import { Email } from 'src/modules/user/domain/value-objects/email.value-object';
+import { Role } from 'src/core/constant/app';
 
 type TSignUpPayload = PickUseCasePayload<SignUpUserRequestProps, 'data'>;
 type TSignUpResponse = ResponseDTO<IRepositoryResponse>;
@@ -46,11 +47,15 @@ export class SignUpUser extends BaseUseCase<TSignUpPayload, TSignUpResponse> {
         );
 
         const userEntity = await UserEntity.create({
-          fullname: data.fullname,
           username: data.username,
           password: data.password,
-          level: new UserLevel('ADMIN'),
           email: new Email(data.email),
+          firstname: data.firstname,
+          lastname: data.lastname,
+          fullname: data.fullname,
+          role: new UserRole(Role.Admin),
+          is_2fa_enabled: false,
+          is_email_verified: false,
           created_by: data.username,
         });
 

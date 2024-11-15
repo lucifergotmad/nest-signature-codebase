@@ -20,7 +20,7 @@ export class GetUser extends BaseUseCase<TGetUserPayload, TGetUserResponse> {
   }
   async execute({ data }: TGetUserPayload) {
     const users = await this.userRepository.findByPaginateSorted(
-      { level: { $ne: 'SU' } },
+      { role: { $ne: 'SU' } },
       { skip: Number(data.skip), limit: Number(data.limit) },
       data.sort_by || { _id: 1 },
     );
@@ -29,7 +29,7 @@ export class GetUser extends BaseUseCase<TGetUserPayload, TGetUserResponse> {
       const userObject = UserMapper.toPlainObject(user);
       return {
         _id: userObject._id,
-        level: userObject.level,
+        role: userObject.role,
         username: userObject.username,
         fullname: userObject.fullname,
         email: userObject.email,

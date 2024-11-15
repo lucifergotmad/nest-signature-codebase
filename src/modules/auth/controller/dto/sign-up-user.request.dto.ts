@@ -3,6 +3,12 @@ import { SignUpUserRequestProps } from '../../contract/auth.request.contract';
 
 export class SignUpRequestDTO implements SignUpUserRequestProps {
   @IsRequiredString()
+  firstname: string;
+
+  @IsRequiredString()
+  lastname: string;
+
+  @IsRequiredString()
   fullname: string;
 
   @IsRequiredString()

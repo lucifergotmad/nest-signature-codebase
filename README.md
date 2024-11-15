@@ -4,7 +4,7 @@ I've compiled best practices from various articles in this **repository**. While
 
 ---
 
-### Table of Contents
+## Table of Contents
 
 [Description](#description)
 
@@ -32,7 +32,7 @@ I've compiled best practices from various articles in this **repository**. While
 
 * [Installation](#installation)
 * [Architecture Layer](#architecture-layer)
-  * [MongoEntity](#mongo-entity)
+  * [MongoEntity](#mongoentity)
   * [Repository](#repository)
   * [Port](#port)
   * [Domain](#domain)
@@ -143,16 +143,20 @@ npm install
 2. Set Up **.env** File
 
 ```shell
-MODE=< DEVELOPMENT|PRODUCTION >
-PORT=3001
-HTTPS_MODE=< 1 | 0 >
+MODE=< development|production >
+PORT=< YOUR_PORT_NUMBER >
+IS_SECURE=< 1 | 0 >
 
-DB_CONNECTION_URI=mongodb+srv://username:password@cluster.net/db_name
-JWT_SECRET_KEY=jwt_key
-JWT_REFRESH_KEY=jwt_refresh
+DB_CONNECTION_URI=< YOUR_DB_CONNECTION_URI >
+JWT_SECRET_KEY=< YOUR_ACCESS_TOKEN_SECRET_KEY >
+JWT_REFRESH_KEY=< YOUR_REFRESH_TOKEN_SECRET_KEY >
+JWT_LIMIT=< YOUR_ACCESS_TOKEN_KEY_LIMIT >
 
 API_KEY=< SIGNATURE_API_KEY >
 SECRET_KEY=< SIGNATURE_SECRET_KEY >
+
+THROTTLE_TTL=< YOUR_THROTTLE_TTL >
+THROTTLE_LIMIT=< YOUR_THROTTLE_LIMIT >
 ```
 
 > Tips: You can copy and paste file **.env.example** and rename to **.env** and change the value for instant setup. '|' means option, also remove the '<' and '>'
@@ -278,9 +282,9 @@ const hash = generateSignature(apiKey, apiSecret, accessToken, timestamp)
                 const hashPassword = await this.hashUtil.generate(props.password);
 
                 return new UserEntity({
-                user_name: props.user_name,
-                level: props.level, // this props use value-object
-                password: hashPassword
+                    user_name: props.user_name,
+                    role: props.role, // this props use value-object
+                    password: hashPassword
                 });
             }
 
@@ -293,22 +297,22 @@ const hash = generateSignature(apiKey, apiSecret, accessToken, timestamp)
 
         > We can separate logic such as hashing value inside **DomainEntity**. I also use **ValueObject** here, don't worry we're gonna cover this up on the next point.
 
-* ### Value Object
+* ### ValueObject
 
         Value Object is a class that contains validation value for each properties of your model.
 
         ```typescript
-        export class UserLevel extends ValueObject<string> {
+        export class UserRole extends ValueObject<string> {
             //...
             protected validate({ value }: DomainPrimitive<string>) {
-                const isLevelValid = this._getValidLevel().find(
-                    (level: string) => level === value,
+                const isRoleValid = this._getValidRole().find(
+                    (role: string) => role === value,
                 );
-                if (!isLevelValid)
-                    throw new BadRequestException('The User Level is not valid');
+                if (!isRoleValid)
+                    throw new BadRequestException('The User Role is not valid');
             }
 
-            private _getValidLevel() {
+            private _getValidRole() {
                 return ['ADMIN', 'OWNER']; 
         }
         ```
@@ -328,7 +332,7 @@ const hash = generateSignature(apiKey, apiSecret, accessToken, timestamp)
 
                 const mongoProps: MongoEntityProps<UserMongoEntity> = {
                 ...entityProps,
-                level: entityProps.level.value,
+                role: entityProps.role.value,
                 };
                 return mongoProps;
             }
@@ -351,3 +355,8 @@ const hash = generateSignature(apiKey, apiSecret, accessToken, timestamp)
   * [Pablo Martinez - Hexagonal Architecture](https://medium.com/ssense-tech/hexagonal-architecture-there-are-always-two-sides-to-every-story-bc0780ed7d9c)
   * [Royi Benita - Generic Repository NestJS](https://betterprogramming.pub/implementing-a-generic-repository-pattern-using-nestjs-fb4db1b61cce)
   * [NestJS Docs](https://docs.nestjs.com/)
+  
+* ## Author
+  
+  * [rizkyridwan-id](https://github.com/rizkyridwan-id)
+  * [lucifergotmad](https://github.com/lucifergotmad)

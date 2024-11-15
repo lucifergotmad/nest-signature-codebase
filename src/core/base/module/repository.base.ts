@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import {
   ClientSession,
-  Document,
   FilterQuery,
   isValidObjectId,
   Model,
@@ -93,9 +92,7 @@ export abstract class BaseRepository<Entity, MongoEntity>
       .session(typeof paramTwo !== 'string' ? paramTwo : paramThree);
     if (foundData) {
       throw new ConflictException(
-        typeof paramTwo === 'string'
-          ? paramTwo
-          : '' || `E 409: DATA ALREADY EXISTS`,
+        typeof paramTwo === 'string' ? paramTwo : `E 409: DATA ALREADY EXISTS`,
       );
     }
   }
@@ -186,12 +183,13 @@ export abstract class BaseRepository<Entity, MongoEntity>
   async saveReturnDocument(
     entity: Entity,
     session?: ClientSession,
-  ): Promise<Document<unknown, unknown, MongoEntity>> {
+  ): Promise<MongoEntity> {
     const mongoEntity = new this.genericModel(
       this.mapper.toPlainObject(entity),
     );
     const newModel = new this.genericModel(mongoEntity);
     const result = await newModel.save({ session });
+
     return result?.toObject();
   }
   async saveMany(entities: Entity[], session?: ClientSession) {
@@ -302,7 +300,7 @@ export abstract class BaseRepository<Entity, MongoEntity>
   }
 
   async deleteAll(session?: ClientSession): Promise<IRepositoryResponse> {
-    if (process.env.MODE === 'PRODUCTION') {
+    if (process.env.MODE === 'production') {
       throw new ForbiddenException(
         'DeleteBulk Feature Disabled in PRODUCTION mode.',
       );

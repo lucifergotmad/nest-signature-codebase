@@ -1,23 +1,38 @@
 import { Entity } from 'src/core/base/domain/entity';
 import { HashService } from 'src/helper/modules/hash/hash.service';
-import { UserLevel } from './value-objects/user-level.value-object';
+import { UserRole } from './value-objects/user-role.value-object';
 import { Types } from 'mongoose';
 import { Email } from './value-objects/email.value-object';
 
+export interface UserCommunicationProps {
+  email: boolean;
+  sms: boolean;
+  whatsapp: boolean;
+}
+
+export interface UserAuthProps {
+  api_token: string;
+  refresh_token: string;
+}
+
 export interface UserProps {
-  fullname: string;
-  email: Email;
   username: string;
   password: string;
-  level: UserLevel;
+  email: Email;
+  firstname: string;
+  lastname: string;
+  fullname: string;
+  phone?: string;
+  role: UserRole;
+  communication?: UserCommunicationProps;
+  is_2fa_enabled: boolean;
+  is_email_verified: boolean;
+  secret_2fa?: string;
   created_by: string;
 }
 
-export interface UpdateUserProps {
-  fullname: string;
-  email: Email;
-  level: UserLevel;
-}
+export interface UpdateUserProps
+  extends Omit<UserProps, 'password' | 'created_by' | 'role'> {}
 
 export class UserEntity extends Entity<UserProps> {
   private static hashUtil: HashService = new HashService();
@@ -30,11 +45,18 @@ export class UserEntity extends Entity<UserProps> {
     const hashPassword = await this.hashUtil.generate(props.password);
 
     return new UserEntity({
-      fullname: props.fullname,
-      email: props.email,
       username: props.username,
       password: hashPassword,
-      level: props.level,
+      email: props.email,
+      firstname: props.firstname,
+      lastname: props.lastname,
+      fullname: props.fullname,
+      phone: props.phone,
+      role: props.role,
+      communication: props.communication,
+      is_2fa_enabled: props.is_2fa_enabled,
+      is_email_verified: props.is_email_verified,
+      secret_2fa: props.secret_2fa,
       created_by: props.created_by,
     });
   }
@@ -44,8 +66,11 @@ export class UserEntity extends Entity<UserProps> {
   }
 
   async updateUser(payload: UpdateUserProps) {
+    this.props.firstname = payload.firstname;
+    this.props.lastname = payload.lastname;
     this.props.fullname = payload.fullname;
     this.props.email = payload.email;
-    this.props.level = payload.level;
+    this.props.is_2fa_enabled = payload.is_2fa_enabled;
+    this.props.is_email_verified = payload.is_email_verified;
   }
 }

@@ -1,6 +1,5 @@
 import {
   ClientSession,
-  Document,
   FilterQuery,
   SortOrder,
   Types,
@@ -60,7 +59,7 @@ export interface BaseRepositoryPort<Entity, MongoEntity> {
   saveReturnDocument(
     entity: Entity,
     session?: ClientSession,
-  ): Promise<Document<unknown, unknown, MongoEntity>>;
+  ): Promise<MongoEntity>;
   saveMany(
     entity: Entity[],
     session?: ClientSession,
